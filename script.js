@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   gsap.defaults({ ease: "power3.out" });
 
   const video = document.querySelector(".bg-video");
-  if (video) video.playbackRate = 0.4;
+  if (video) video.playbackRate = 0.35;
 
   /* ── Set initial states ── */
 

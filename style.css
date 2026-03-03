@@ -55,6 +55,8 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  filter: blur(1px);
+  transform: scale(1.03);
 }
 
 .noise {
@@ -361,17 +363,13 @@ body {
   }
 
   .bottom-inner {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
   }
 
   .bottom-group {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px 32px;
-    width: 100%;
-    padding: 12px 0;
+    display: contents;
   }
 
   .bottom-item {
