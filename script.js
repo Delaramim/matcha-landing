@@ -42,14 +42,24 @@ document.addEventListener("DOMContentLoaded", () => {
     duration: 0.9,
     ease: "power3.out",
   }, "-=0.5")
-  .to(".hero-line", {
-    height: 240,
-    duration: 1.6,
-    ease: "power2.inOut",
-  }, "-=0.3")
-  .to(".bottom-inner", {
-    opacity: 1,
-    duration: 0.8,
-    ease: "power2.out",
-  }, "-=0.9");
+  .add(() => {
+    const cta = document.querySelector(".hero-cta");
+    const line = document.querySelector(".hero-line");
+    const ctaRect = cta.getBoundingClientRect();
+
+    line.style.top = (ctaRect.bottom + 20) + "px";
+
+    gsap.to(line, {
+      clipPath: "inset(0 0 0% 0)",
+      duration: 1.6,
+      ease: "power2.inOut",
+    });
+
+    gsap.to(".bottom-inner", {
+      opacity: 1,
+      duration: 0.8,
+      ease: "power2.out",
+      delay: 0.7,
+    });
+  }, "+=0.1");
 });
