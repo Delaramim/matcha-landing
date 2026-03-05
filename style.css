@@ -100,6 +100,22 @@ body {
   transform: scale(1.03);
 }
 
+.cursor-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  will-change: opacity;
+  mix-blend-mode: screen;
+}
+
+.cursor-glow canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .noise {
   position: absolute;
   inset: -20%;
@@ -158,8 +174,9 @@ body {
   align-items: center;
   padding: var(--space-2) var(--space-4);
   border-radius: 100px;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
+  letter-spacing: 0.04em;
   line-height: 1.5;
   color: var(--text-secondary);
   text-decoration: none;
@@ -179,25 +196,47 @@ body {
   align-items: center;
   justify-content: center;
   height: var(--space-12);
-  padding: 0 var(--space-6);
-  border: 2px solid var(--white);
+  padding: 0 var(--space-8);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 100px;
   font-family: var(--font);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
+  letter-spacing: 0.02em;
   line-height: 1.5;
-  color: var(--accent);
-  background: var(--white);
   text-decoration: none;
   cursor: pointer;
   transition: transform var(--duration-slow) var(--ease),
               box-shadow var(--duration-slow) var(--ease),
-              background var(--duration-slow) var(--ease);
+              background var(--duration-slow) var(--ease),
+              border-color var(--duration-slow) var(--ease);
 }
 
-.btn:hover {
+.btn-nav {
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.btn-nav:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.4);
   transform: translateY(-1px);
-  box-shadow: 0 6px 24px rgba(255, 255, 255, 0.15);
+}
+
+.btn-primary {
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.btn-primary:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 32px rgba(255, 255, 255, 0.1);
 }
 
 /* ── Hero content ── */
@@ -217,8 +256,8 @@ body {
 
 .hero-title {
   font-size: clamp(64px, 8.33vw, 120px);
-  font-weight: 600;
-  line-height: 1;
+  font-weight: 400;
+  line-height: 1.05;
   letter-spacing: -0.02em;
   color: var(--white);
   opacity: 0;
@@ -227,10 +266,11 @@ body {
 
 .hero-subtitle {
   max-width: 520px;
-  font-size: clamp(16px, 1.67vw, 24px);
+  font-size: clamp(16px, 1.39vw, 20px);
   font-weight: 400;
-  line-height: 1.5;
-  color: var(--white);
+  letter-spacing: 0.01em;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
   opacity: 0;
   margin-bottom: var(--space-10);
 }
@@ -247,11 +287,9 @@ body {
   left: 50%;
   transform: translateX(-50%);
   bottom: 0;
-  width: 4px;
-  opacity: 0.5;
-  background: var(--white);
-  border-radius: 2px;
+  width: 1px;
   z-index: 5;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0));
   clip-path: inset(0 0 100% 0);
 }
 
@@ -264,16 +302,7 @@ body {
   right: 0;
   z-index: 5;
   height: var(--strip-height);
-}
-
-.bottom-strip::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: var(--white);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .bottom-inner {
@@ -288,10 +317,31 @@ body {
 }
 
 .bottom-item {
-  font-size: clamp(16px, 1.67vw, 24px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  transition: opacity var(--duration-slow) var(--ease),
+              transform var(--duration-slow) var(--ease);
+}
+
+.bottom-item:hover {
+  opacity: 1 !important;
+  transform: translateX(4px);
+}
+
+.bottom-num {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1;
+}
+
+.bottom-label {
+  font-size: clamp(14px, 1.25vw, 18px);
   font-weight: 400;
-  line-height: 1.5;
-  color: var(--white);
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 /* ── Hamburger (hidden on desktop) ── */
@@ -328,7 +378,6 @@ body {
 
   .nav-link {
     padding: var(--space-2) var(--space-3);
-    font-size: 14px;
   }
 }
 
@@ -392,11 +441,6 @@ body {
 
   .bottom-strip {
     height: auto;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
-  }
-
-  .bottom-strip::after {
-    display: none;
   }
 
   .bottom-inner {
@@ -406,13 +450,19 @@ body {
     padding: var(--space-6) var(--gutter);
   }
 
-  .bottom-item {
+  .bottom-num {
+    font-size: 10px;
+  }
+
+  .bottom-label {
     font-size: 14px;
-    line-height: 1.4;
+  }
+
+  .bottom-item {
     opacity: 0.7;
   }
 
-  .bottom-item br {
+  .bottom-label br {
     display: none;
   }
 }
